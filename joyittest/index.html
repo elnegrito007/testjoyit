@@ -1,0 +1,436 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<title>Test Joy it</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body>
+	<div id="appVue">
+
+		<div class="grid grid-cols-3 gap-4" style="margin-top: 9px; margin-left: 9px;margin-right: 9px;">
+
+			<div class="max-w-sm rounded overflow-hidden shadow-lg" style="text-align: -webkit-center">
+				<img class="w-full" src="https://media.istockphoto.com/vectors/cartoon-meds-drugs-tablet-capsules-and-prescription-bottles-blisters-vector-id1254838226" alt="Medicamentos">
+				<div class="px-6 py-4">
+					<div class="font-bold text-xl mb-2">Consulta de medicamentos</div>
+				</div>
+				<div class="px-6 pt-4 pb-1" style="text-align:center; cursor: pointer;">
+					<span v-on:click="extraerMedicamentos" class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Consultar</span>
+				</div>
+			</div>
+
+			<div class="max-w-sm rounded overflow-hidden shadow-lg" style="text-align: -webkit-center">
+				<img style="width: 74%;" src="data:image/jpeg;base64,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" alt="promociones">
+				<div class="px-6 py-4">
+					<div class="font-bold text-xl mb-2">Consulta de promociones</div>
+				</div>
+				<div class="px-6 pt-4 pb-1" style="text-align:center; cursor: pointer;">
+					<span v-on:click="extraerPromociones" class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Consultar</span>
+				</div>
+			</div>
+
+			<div class="max-w-sm rounded overflow-hidden shadow-lg" style="text-align: -webkit-center">
+				<img style="width: 62%;" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-yHbXcre8wNNoAz8wQv0sGdpOu-0DlkR6nw&usqp=CAU" alt="facturas">
+				<div class="px-6 py-4">
+					<div class="font-bold text-xl mb-2">Consulta de facturas</div>
+				</div>
+				<div class="px-6 pt-4 pb-1" style="text-align:center; cursor: pointer;">
+					<span v-on:click="consultarFacturas" class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Consultar</span>
+				</div>
+			</div>
+
+
+		</div>
+
+		<div class="grid grid-cols-3 gap-4" style="margin-top: 20px; margin-bottom: 20px; margin-left: 9px;margin-right: 9px;text-align: center;" >
+			<span v-on:click="insertMedicamento" class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2" style="width: 200px; cursor: pointer;margin: auto">Insertar medicamento</span>
+			<span v-on:click="insertFactura" class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2" style="width: 200px; cursor: pointer;margin: auto">Insertar factura</span>
+			<span v-on:click="insertPromocion" class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2" style="width: 200px; cursor: pointer;margin: auto">Insertar promoción</span>
+		</div>
+
+		<div class=" rounded overflow-hidden shadow-lg" style="margin-top: 9px;margin-left: 9px; margin-right: 9px;">
+			<ul id="list_medicamentos" v-show="view==2">
+				<li>
+					<div class="grid grid-cols-4 gap-4" style="margin-top: 9px; margin-left: 9px;margin-right: 9px;">
+						<div>Id</div><div>Nombre</div><div>Precio</div><div>Ubicación</div>
+					</div>
+				</li>
+				<li v-for="item in medicamentos">
+					<div class="grid grid-cols-4 gap-4" style="margin-top: 9px; margin-left: 9px;margin-right: 9px;">
+						<div>{{ item.id }}</div><div>{{ item.nombre }}</div><div>{{ item.precio }}</div><div>{{ item.ubicacion }}</div>
+					</div>
+					<hr>
+				</li>
+			</ul>
+			<ul id="list_promociones" v-show="view==1">
+				<li>
+					<div class="grid grid-cols-4 gap-4" style="margin-top: 9px; margin-left: 9px;margin-right: 9px;">
+						<div>Id</div><div> Descripción</div><div>Porcentaje</div><div>Fecha_inicio / Fecha_fin</div>
+					</div>
+				</li>
+				<li v-for="item in promociones">
+					<div class="grid grid-cols-4 gap-4" style="margin-top: 9px; margin-left: 9px;margin-right: 9px;">
+						<div>{{ item.id }}</div><div>{{ item.descripcion }}</div><div>{{ item.porcentaje }}</div><div>{{ item.fecha_inicio }} / {{ item.fecha_fin }}</div>
+					</div>
+					<hr>
+				</li>
+			</ul>
+
+			<ul id="list_facturas" v-show="view==3">
+				<li>
+					<div class="grid grid-cols-4 gap-4" style="margin-top: 9px; margin-left: 9px;margin-right: 9px;">
+						<div>Id</div><div> Fecha</div><div>Pago total</div><div>Id promoción</div>
+					</div>
+				</li>
+				<li v-for="item in facturas">
+					<div class="grid grid-cols-4 gap-4" style="margin-top: 9px; margin-left: 9px;margin-right: 9px;">
+						<div>{{ item.id }}</div>
+						<div>{{ item.fecha_crear }}</div>
+						<div>{{ item.pago_total }}</div>
+						<div v-for='item2 in item.id_medicamentos'>
+							<div class="grid grid-cols-4 gap-4" style="margin-top: 9px; margin-left: 9px;margin-right: 9px;">
+								<div>{{ item2.id }}</div><div>{{ item2.nombre }}</div><div>{{ item2.precio }}</div>
+							</div>
+							<hr>
+						</div>
+					</div>
+					<hr>
+				</li>
+			</ul>
+		</div>
+
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+	<script>
+		var block = this;
+		new Vue({
+		  el: '#appVue',
+		  data () {
+			return {
+				medicamentos: [],
+				promociones: [],
+				facturas: [],
+				factura_fecha_inicio : "",
+				factura_fecha_fin : "",
+				fecha_compra:"",
+				simulate:"",
+				view: 0
+			}
+		  },
+		  methods: {
+			  extraerPromociones(){
+				  this.view = 1;
+				  var myHeaders = new Headers();
+				  myHeaders.append("accept", "application/json");
+
+				  var requestOptions = {
+					  method: 'GET',
+					  headers: myHeaders,
+					  redirect: 'follow'
+				  };
+
+				  fetch("http://localhost:9092/v1/promocion", requestOptions)
+						  .then(response => response.text())
+						  .then(result => this.promociones = JSON.parse(result))
+						  .catch(error => console.log('error', error));
+			  },
+			  extraerMedicamentos(){
+				  this.view = 2;
+				  var myHeaders = new Headers();
+				  myHeaders.append("accept", "application/json");
+
+				  var requestOptions = {
+					  method: 'GET',
+					  headers: myHeaders,
+					  redirect: 'follow'
+				  };
+
+				  fetch("http://localhost:9092/v1/medicamento", requestOptions)
+						  .then(response => response.text())
+						  .then(result => this.medicamentos = JSON.parse(result))
+						  .catch(error => console.log('error', error));
+			  },
+			  extraerFacturas(fecha_inicio,fecha_fin){
+				  this.view = 3;
+				  var myHeaders = new Headers();
+				  myHeaders.append("accept", "application/json");
+
+				  var requestOptions = {
+					  method: 'GET',
+					  headers: myHeaders,
+					  redirect: 'follow'
+				  };
+
+				  fetch("http://localhost:9092/v1/factura?fecha_inicio="+fecha_inicio+"&fecha_fin="+fecha_fin, requestOptions)
+						  .then(response => response.text())
+						  .then(result => this.facturas = JSON.parse(result))
+						  .catch(error => console.log('error', error));
+			  },
+			  saveMedicamento(nombre, precio,ubicacion){
+				  var myHeaders = new Headers();
+				  myHeaders.append("accept", "application/json");
+				  myHeaders.append("Content-Type", "application/json");
+
+				  var raw = JSON.stringify({
+					  "id": this.medicamentos.length + 1,
+					  "nombre": nombre,
+					  "precio": parseFloat(precio),
+					  "ubicacion": ubicacion
+				  });
+
+				  var requestOptions = {
+					  method: 'POST',
+					  headers: myHeaders,
+					  body: raw,
+					  redirect: 'follow'
+				  };
+
+				  fetch("http://localhost:9092/v1/medicamento", requestOptions)
+						  .then(response => response.text())
+						  .then(result => alert(result))
+						  .catch(error => console.log('error', error));
+			  },
+			  savePromocion(descripcion, porcentaje,inicio,fin){
+				  var myHeaders = new Headers();
+				  myHeaders.append("accept", "application/json");
+				  myHeaders.append("Content-Type", "application/json");
+
+				  var raw = JSON.stringify({
+					  "id": this.promociones.length + 1,
+					  "descripcion": descripcion,
+					  "porcentaje": parseInt(porcentaje),
+					  "fecha_inicio": inicio,
+					  "fecha_fin": fin
+				  });
+
+				  var requestOptions = {
+					  method: 'POST',
+					  headers: myHeaders,
+					  body: raw,
+					  redirect: 'follow'
+				  };
+
+				  fetch("http://localhost:9092/v1/promocion", requestOptions)
+						  .then(response => response.text())
+						  .then(result => alert(result))
+						  .catch(error => console.log('error', error));
+			  },
+			  saveFactura(total,promocion,medicamentos){
+				  var myHeaders = new Headers();
+				  myHeaders.append("accept", "application/json");
+				  myHeaders.append("Content-Type", "application/json");
+
+				  let dia = new Date();
+				  let day = dia.getDay().toString();
+				  let month = (dia.getMonth()+1).toString();
+				  if(dia.getDay().toString().length==1){
+					  day =  "0"+dia.getDay();
+				  }
+				  if(dia.getMonth().toString().length==1){
+					  month = "0"+(dia.getMonth()+1);
+				  }
+				  let anio = dia.getFullYear();
+
+				  var raw = JSON.stringify({
+					  "id": this.facturas.length + 1,
+					  "fecha_crear": anio+"-"+month+"-"+day,
+					  "pago_total": total,
+					  "id_promocion": promocion,
+					  "id_medicamentos": medicamentos
+				  });
+
+				  var requestOptions = {
+					  method: 'POST',
+					  headers: myHeaders,
+					  body: raw,
+					  redirect: 'follow'
+				  };
+
+				  fetch("http://localhost:9092/v1/factura", requestOptions)
+						  .then(response => response.text())
+						  .then(result => alert(result))
+						  .catch(error => console.log('error', error));
+			  },
+			  simulateFactura(){
+				  var myHeaders = new Headers();
+				  myHeaders.append("accept", "application/json");
+
+				  var requestOptions = {
+					  method: 'GET',
+					  headers: myHeaders,
+					  redirect: 'follow'
+				  };
+
+				  fetch("http://localhost:9092/v1/factura/simular?id_medicamentos="+this.id_medicamentosList+"&fecha_compra="+this.fecha_compra, requestOptions)
+						  .then(response => response.text())
+						  .then(result => this.simulate = result)
+						  .catch(error => console.log('error', error));
+			  },
+			  insertMedicamento(){
+
+				  function requestName(){
+					  let nombre = prompt("Inserte nombre del medicamento");
+					  if(nombre!==""){
+						  block.insert_nombre = nombre;
+					  }else{
+						  requestName();
+					  }
+				  }
+
+				  function requestPrecio(){
+					  let precio = prompt("Inserte precio del medicamento");
+					  if(precio!=="" && precio>0){
+						  block.insert_precio = precio;
+					  }else{
+						  requestPrecio();
+					  }
+				  }
+
+				  function requestUbicacion(){
+					  let ubicacion = prompt("Inserte ubicación del medicamento");
+					  if(ubicacion!==""){
+						  block.insert_ubicacion = ubicacion;
+					  }else{
+						  requestUbicacion();
+					  }
+				  }
+
+				  requestName();
+				  requestPrecio();
+				  requestUbicacion();
+				  this.saveMedicamento(block.insert_nombre,block.insert_precio,block.insert_ubicacion);
+			  },
+			  insertPromocion(){
+
+				  function requestDescripcion(){
+					  let descripcion = prompt("Inserte descripción de la promoción");
+					  if(descripcion!==""){
+						  block.insert_descripcion = descripcion;
+					  }else{
+						  requestDescripcion();
+					  }
+				  }
+
+				  function requestPorcentaje(){
+					  let porcentaje = prompt("Inserte porcentaje de la promoción");
+					  if(porcentaje!=="" && porcentaje>0){
+						  block.insert_porcentaje = porcentaje;
+					  }else{
+						  requestPorcentaje();
+					  }
+				  }
+
+				  function requestFinicio(){
+					  let finicio = prompt("Inserte fecha de inicio de la promoción ");
+					  if(finicio!==""){
+						  block.insert_finicio = finicio;
+					  }else{
+						  requestFinicio();
+					  }
+				  }
+				  function requestFfin(){
+					  let ffin = prompt("Inserte fecha final de la promoción");
+					  if(ffin!==""){
+						  block.insert_ffin = ffin;
+					  }else{
+						  requestFfin();
+					  }
+				  }
+
+				  requestDescripcion();
+				  requestPorcentaje();
+				  requestFinicio();
+				  requestFfin();
+				  this.savePromocion(block.insert_descripcion,block.insert_porcentaje,block.insert_finicio, block.insert_ffin);
+			  },
+			  consultarFacturas(){
+				  function requestFinicio(){
+					  let finicio = prompt("Inserte fecha de inicio de facturación ");
+					  if(finicio!==""){
+						  block.insert_finicio = finicio;
+					  }else{
+						  requestFinicio();
+					  }
+				  }
+				  function requestFfin(){
+					  let ffin = prompt("Inserte fecha final de facturación");
+					  if(ffin!==""){
+						  block.insert_ffin = ffin;
+					  }else{
+						  requestFfin();
+					  }
+				  }
+
+				  requestFinicio();
+				  requestFfin();
+				  this.extraerFacturas(block.insert_finicio,block.insert_ffin);
+			  },
+			  insertFactura(){
+
+				  var myHeaders = new Headers();
+				  myHeaders.append("accept", "application/json");
+
+				  var requestOptions = {
+					  method: 'GET',
+					  headers: myHeaders,
+					  redirect: 'follow'
+				  };
+
+				  fetch("http://localhost:9092/v1/medicamento", requestOptions)
+						  .then(response => response.text())
+						  .then(result => block.medicamentosAfiltrar = JSON.parse(result))
+						  .catch(error => console.log('error', error));
+
+				  block.arraymedicamentos = [];
+				  block.total = 0;
+
+				  function promocionAplicar(){
+					  let promocion = prompt("Inserte id promoción a aplicar");
+					  if(promocion!=="" && promocion>0){
+						  block.promocion = promocion;
+					  }else{
+						  promocionAplicar();
+					  }
+				  }
+
+				  function inserteIdmedicamentos(){
+					  let medicamentos = prompt("Inserte id de medicamentos");
+					  if(medicamentos!==""){
+						  let r = confirm("Deseas arregar mas medicamentos");
+						  if (r) {
+							  for (var i = 0; i<block.medicamentosAfiltrar.length; i++){
+								  if(block.medicamentosAfiltrar[i].id==medicamentos){
+									  block.total=block.total+parseInt(block.medicamentosAfiltrar[i].precio);
+								  }
+							  }
+							  block.arraymedicamentos.push(medicamentos);
+							  inserteIdmedicamentos();
+						  } else {
+							  for (var i = 0; i<block.medicamentosAfiltrar.length; i++){
+								  if(block.medicamentosAfiltrar[i].id==medicamentos){
+									  block.total=block.total+parseInt(block.medicamentosAfiltrar[i].precio);
+								  }
+							  }
+							  block.arraymedicamentos.push(medicamentos);
+							  this.saveFactura(block.total,block.promocion,block.arraymedicamentos);
+						  }
+					  }else{
+						  inserteIdmedicamentos();
+					  }
+				  }
+
+				  promocionAplicar();
+				  inserteIdmedicamentos();
+
+			  }
+		  },
+		  mounted(){
+			this.extraerMedicamentos();
+			this.extraerPromociones();
+		  }
+		})
+	</script>
+</body>
+</html>
