@@ -46,7 +46,7 @@
 
 		<div class="grid grid-cols-3 gap-4" style="margin-top: 20px; margin-bottom: 20px; margin-left: 9px;margin-right: 9px;text-align: center;" >
 			<span v-on:click="insertMedicamento" class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2" style="width: 200px; cursor: pointer;margin: auto">Insertar medicamento</span>
-			<span v-on:click="insertFactura" class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2" style="width: 200px; cursor: pointer;margin: auto">Insertar factura</span>
+			<span @click.prevent="insertFactura" class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2" style="width: 200px; cursor: pointer;margin: auto">Insertar factura</span>
 			<span v-on:click="insertPromocion" class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2" style="width: 200px; cursor: pointer;margin: auto">Insertar promoción</span>
 		</div>
 
@@ -236,8 +236,8 @@
 				  var raw = JSON.stringify({
 					  "id": this.facturas.length + 1,
 					  "fecha_crear": anio+"-"+month+"-"+day,
-					  "pago_total": total,
-					  "id_promocion": promocion,
+					  "pago_total": parseInt(total),
+					  "id_promocion": parseInt(promocion),
 					  "id_medicamentos": medicamentos
 				  });
 
@@ -369,6 +369,10 @@
 			  },
 			  insertFactura(){
 
+				  block.arraymedicamentos = [];
+				  block.total = 0;
+				  block.medicamentosAfiltrar=[];
+
 				  var myHeaders = new Headers();
 				  myHeaders.append("accept", "application/json");
 
@@ -383,8 +387,6 @@
 						  .then(result => block.medicamentosAfiltrar = JSON.parse(result))
 						  .catch(error => console.log('error', error));
 
-				  block.arraymedicamentos = [];
-				  block.total = 0;
 
 				  function promocionAplicar(){
 					  let promocion = prompt("Inserte id promoción a aplicar");
@@ -405,7 +407,7 @@
 									  block.total=block.total+parseInt(block.medicamentosAfiltrar[i].precio);
 								  }
 							  }
-							  block.arraymedicamentos.push(medicamentos);
+							  block.arraymedicamentos.push(parseInt(medicamentos));
 							  inserteIdmedicamentos();
 						  } else {
 							  for (var i = 0; i<block.medicamentosAfiltrar.length; i++){
@@ -413,8 +415,8 @@
 									  block.total=block.total+parseInt(block.medicamentosAfiltrar[i].precio);
 								  }
 							  }
-							  block.arraymedicamentos.push(medicamentos);
-							  this.saveFactura(block.total,block.promocion,block.arraymedicamentos);
+							  block.arraymedicamentos.push(parseInt(medicamentos));
+							  console.log(block.total,block.promocion,block.arraymedicamentos);
 						  }
 					  }else{
 						  inserteIdmedicamentos();
@@ -423,6 +425,7 @@
 
 				  promocionAplicar();
 				  inserteIdmedicamentos();
+				  this.saveFactura(block.total,block.promocion,block.arraymedicamentos);
 
 			  }
 		  },
